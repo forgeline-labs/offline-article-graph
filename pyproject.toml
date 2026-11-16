@@ -1,0 +1,25 @@
+[project]
+name = "offline-article-graph"
+version = "0.1.0"
+description = "Offline directed article graph analysis (shortest path, reachability, degrees)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["ruff==0.15.22"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["."]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["article_graph", "helpers"]
+
+[tool.ruff.format]
+quote-style = "double"

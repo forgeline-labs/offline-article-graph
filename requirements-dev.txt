@@ -1,0 +1,2 @@
+# Development-only dependencies. Runtime uses the Python 3.12 standard library.
+ruff==0.15.22
