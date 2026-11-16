@@ -105,6 +105,8 @@ def _read_graph(path: str) -> object:
         )
     except json.JSONDecodeError as exc:
         raise InputError(f"invalid JSON: {exc.msg} at line {exc.lineno} column {exc.colno}") from exc
+    except RecursionError as exc:
+        raise InputError("invalid JSON: nesting exceeds the recursion limit") from exc
 
 
 def _force_utf8() -> None:

@@ -212,6 +212,7 @@ class ErrorHandlingTests(unittest.TestCase):
             b'{"nodes":["A"],"edges":[[Infinity,"A"]]}',
             b'{"nodes":["A"],"edges":[["A","B"]]}',
             b"\xff\xfe\x00",
+            b"[" * 500_000,
         ]
         with tempfile.TemporaryDirectory() as directory:
             for index, content in enumerate(invalid_contents):
