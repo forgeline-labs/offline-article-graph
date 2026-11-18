@@ -17,34 +17,34 @@ library (`article_graph`), with a thin command-line wrapper (`app`).
 
 ## Quickstart
 
-The repository is importable from its root without installation and has no
-runtime dependencies. From the repository root:
+Requires Python 3.12; no installation. Run from the repository root in a
+POSIX shell. The new checked-in `fixtures/graph.json` contains the
+directed chain A → B → C. There is no reverse path; an unknown source
+is a validation error (exit 2).
 
-```sh
-python app --version
-# offline-article-graph 0.1.0
-
-cat > graph.json <<'JSON'
-{"nodes":["A","B","C","D"],"edges":[["A","B"],["A","C"],["B","D"],["C","D"]]}
-JSON
-
-python app analyze graph.json --source A --target D
-# {"path":["A","B","D"],"reachable":["A","B","C","D"],"degrees":[{"id":"A","in":0,"out":2},{"id":"B","in":1,"out":1},{"id":"C","in":1,"out":1},{"id":"D","in":2,"out":0}]}
+```console
+$ cat fixtures/graph.json
+{"nodes":["A","B","C"],"edges":[["A","B"],["B","C"]]}
+$ python app analyze fixtures/graph.json --source A --target C
+{"path":["A","B","C"],"reachable":["A","B","C"],"degrees":[{"id":"A","in":0,"out":1},{"id":"B","in":1,"out":1},{"id":"C","in":1,"out":0}]}
+$ python app analyze fixtures/graph.json --source C --target A
+{"path":null,"reachable":["C"],"degrees":[{"id":"A","in":0,"out":1},{"id":"B","in":1,"out":1},{"id":"C","in":1,"out":0}]}
+$ python app --version
+offline-article-graph 0.1.0
+$ python app analyze fixtures/graph.json --source missing --target C
+error: unknown source id: missing
+$ echo $?
+2
 ```
 
-`./app` and `python app` are equivalent (the file is executable and has a
-shebang). The tool is read-only: it never modifies `graph.json` and creates no
-state or cache files.
+Library use (from the repository root, no installation):
 
-Library use:
-
-```python
-from article_graph import analyze
-
-graph = {"nodes": ["A", "B"], "edges": [["A", "B"]]}
-result = analyze(graph, "A", "B")
-print(result)
-# {'path': ['A', 'B'], 'reachable': ['A', 'B'], 'degrees': [{'id': 'A', 'in': 0, 'out': 1}, {'id': 'B', 'in': 1, 'out': 0}]}
+```pycon
+>>> import json; from pathlib import Path
+>>> from article_graph import analyze
+>>> graph = json.loads(Path("fixtures/graph.json").read_text(encoding="utf-8"))
+>>> analyze(graph, "A", "C")
+{'path': ['A', 'B', 'C'], 'reachable': ['A', 'B', 'C'], 'degrees': [{'id': 'A', 'in': 0, 'out': 1}, {'id': 'B', 'in': 1, 'out': 1}, {'id': 'C', 'in': 1, 'out': 0}]}
 ```
 
 ## Graph format
