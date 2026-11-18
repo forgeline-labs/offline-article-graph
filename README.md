@@ -15,7 +15,7 @@ library (`article_graph`), with a thin command-line wrapper (`app`).
 - Platform: **POSIX — Ubuntu and macOS** (native Windows is out of scope)
 - Runtime: **Python 3.12**, standard library only
 
-## Quickstart
+## Usage examples
 
 Requires Python 3.12; no installation. Run from the repository root in a
 POSIX shell. The new checked-in `fixtures/graph.json` contains the
